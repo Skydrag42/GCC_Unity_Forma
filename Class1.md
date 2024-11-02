@@ -173,3 +173,105 @@ Hit play again, and this time it works! Yay!
 
 ## Adding a player
 
+It's time for us to actually play, and not just watch as the game runs! 
+
+And for that, we'll be adding a player that will move around the scene. 
+When making a player for a 3D game, there are generally only two options to choose from:
+- either you make a First Person Controller, meaning you'll see from the eyes of your character 
+(shooter games often use this, like in Call of Duty or Overwatch)
+- or you make a Third Person Controller, where the camera will be behind the player (like in The Last of Us, Uncharted, 
+or many other adventure games)
+
+For the sake of simplicity, we'll stick to first person in this course. 
+
+In unity, there are three main ways to make a character controller. 
+- The first one is by coding everything from scratch, meaning you'll have to use your own physics system. 
+This can be pretty inneficient and overcomplicate things, but depending on your game it could be an option. 
+However, bear in mind that this is an option you should choose only if you ave a very deep understanding of physics in a game engine.
+- The second one is using a `Rigidbody` as a base. This will allow the physics engine to take care of all physics related stuff,
+and you'll be able to simulate the forces that are applied to your player like the wind, 
+how slippery the floor is and many other more easily. It is however a bit hard to set up/code at a beginner level, 
+and also means that you won't really have extremely precise control over the movement easily as it will be handled by the engine.
+- The third option is using the provided `CharacterController` component. 
+This component takes care of almost all of the basic code you might need, such as collisions, stairs and slopes.
+However, it is not simulated by the physics engine, so you'll have to code your own gravity and physics interactions 
+like pushing an object around. Though this also means that you have complete control over the movement of your player 
+(except for collisions where it's always a bit tricky to code custom interactions, but is almost never needed). 
+Another downside is that you won't be able to use any shape for the collisions other than the capsule one (which is often enough).
+
+For this course, we'll use the CharacterController along with a custom player prefab available [here]().
+Just drag and drop the file in your Project window, and click import.
+
+Once the import is complete, you should have a new prefab in your Prefab folder, called `Player`. 
+Drag and drop the player in the scene (adjust the position if needed) and test the scene. 
+You should be able to move the player using **WASD/ZQSD/Arrows** keys, but the camera is not inside it.
+The problem is that we did not remove the previous camera, so there are currently two cameras trying to render the scene.
+One we placed before, and one inside the player. Remove the previous camera (by pressing **Del** or right-clicking in the hierarchy)
+and try running the game again. 
+
+If you had not forgotten to quit play mode before making your changes, 
+you should now see from the player's perspective and be able to move the camera using your mouse. You can also jump with **Space**
+and sprint while pressing **Shift**.
+
+![player pov](ClassTutorialAssets/player_pov.png)
+
+Before we end this class, let's take a quick look at how the player is built.
+To isolate it from the rest of the scene, lets go into prefab view.
+
+First, lets take a look at the hierarchy:
+
+![player hierarchy](ClassTutorialAssets/player_hierarchy.png)
+
+We have 
+- a player object as the root, which will contain the scripts and components for the movement;
+- the camera;
+- a capsule which is the visual part of the player (you can see that the collider was removed);
+- and an empty object that will help our script determine where the ground is.
+
+Now, lets look at the inspector of the root object, the player:
+
+![player inspector](ClassTutorialAssets/player_inspector.png)
+
+First off, we have the `Transform`, nothing new here.
+
+Then, we have the famous `CharacterController` component. 
+We can see a bunch of options like slope limit or the step offset which are pretty self-explanatory.
+The center, radius and height ones are for defining the collider (a capsule) used by the component.
+
+Next up is the `MouseLook` script. If you want to take a look at how its written, 
+double-clicking the script field will open it in your designated editor. 
+The inspector shows values for the sensitivity or smoothing of the camera, 
+and asks for a reference to the camera that will be used.
+
+In fourth comes the `PlayerMovement` script. 
+You can have fun changing the values and testing how it affects the movement 
+(here, changing the values in play mode will be useful as you'll come back to the previous ones 
+when you exit it).
+Below the movement are the options used to check if the player is grounded. 
+This is needed for allowing the player to jump only when touching the ground.
+
+Finally, the `PlayerInput` component. This is the bridge between the scripts and the user inputs.
+If you open the Events and Player dropdowns, you'll see many different slots for the different actions
+that the user can input, such as Move, Look, or Jump.
+
+![player input](ClassTutorialAssets/player_input.png)
+
+For some of these actions, a specific function from the PlayerMovement or MouseLook scripts is assigned.
+This means that when the user will perform said action, the corresponding functions will be called.
+
+These actions are defined in an asset available in your Assets folder called *InputSystem_Actions*.
+You can go take a look at how it's build, and even add some actions of your own.
+
+![input actions](ClassTutorialAssets/input_actions.png)
+
+## Conclusion
+
+And that's it for this class! Thank you for following up to here, and see you next time.
+Don't forget to experiment with what you've learned here, as you'll only get better through practice.
+For example, you could make a level where we have to jump from box to box in order to get to a very high or far point.
+
+Bye!
+
+
+
+*course by Julien Charvet for GCC*
