@@ -199,7 +199,7 @@ like pushing an object around. Though this also means that you have complete con
 (except for collisions where it's always a bit tricky to code custom interactions, but is almost never needed). 
 Another downside is that you won't be able to use any shape for the collisions other than the capsule one (which is often enough).
 
-For this course, we'll use the CharacterController along with a custom player prefab available [here]().
+For this course, we'll use the CharacterController along with a custom player prefab available [here](ClassTutorialAssets/FPSController_IS.unitypackage).
 Just drag and drop the file in your Project window, and click import.
 
 Once the import is complete, you should have a new prefab in your Prefab folder, called `Player`. 
