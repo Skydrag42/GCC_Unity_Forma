@@ -14,14 +14,14 @@ Make sure you have the Unity version 6000.0.24f1 or later (earlier versions migh
 
 Click on `new_project` and select the `Universal 3D` Template. You can set your project name and folder on the right. Once you're done setting up, click on `Create project`. The unity editor should start loading a new project.
 
-![new project image](ClassTutorialAssets/new_project.png)  
-![Universal 3D image](ClassTutorialAssets/urp.png)
+![new project image](ClassTutorialAssets/class1/img/new_project.png)  
+![Universal 3D image](ClassTutorialAssets/class1/img/urp.png)
 
 ## Navigating the editor
 
 You should have spawned inside the editor, and your screen should look something like this:
 
-![editor spawn point image](ClassTutorialAssets/editor_first_start.png)
+![editor spawn point image](ClassTutorialAssets/class1/img/editor_first_start.png)
 
 There are a few different windows. 
 
@@ -32,7 +32,7 @@ Use **MMB** to pan the view, **Shift + RMB** to rotate the view and **Scroll** t
 Now that you know how to move around in the scene, let's add an object to it. 
 Go to the `GameObject` menu on the top of the editor, and under `3D Object`, click on `Cube`.
 
-![creating a cube](ClassTutorialAssets/create_cube.png)
+![creating a cube](ClassTutorialAssets/class1/img/create_cube.png)
 
 - On the left is the `Hierarchy`. If you haven't clicked anything after creating your cube, you should see that you can rename it as you want. 
 The window represents the scene tree, where you'll find all the objects in the current scene. 
@@ -63,7 +63,7 @@ You should automatically be switched to the Game window. If you haven't moved yo
 What we currently see is the point of view of the camera object. You can select it in the hierachy and move it. 
 You can also add other objects by right-clicking in the hierarchy.
 
-![play mode](ClassTutorialAssets/playmode.png)
+![play mode](ClassTutorialAssets/class1/img/playmode.png)
 
 Now exit play mode (the stop button or **Ctrl+P**, not the pause one which lets you skip frame by frame, often used for debug).
 Oh no! The second cube has disappeared, along with the modifications we made to the camera. Did we forget to save something? 
@@ -82,7 +82,7 @@ The shortcut **Ctrl+D** lets you duplicate the currently selected object.
 Don't forget to rename your objects to keep your scene hierarchy tidy.
 By rotating, moving and scaling the objects, you can easily get sometehing that looks like this:
 
-![cubic scene](ClassTutorialAssets/cube_scene.png)
+![cubic scene](ClassTutorialAssets/class1/img/cube_scene.png)
 
 ### Colors
 Although, even if the scene looks better now, it's still missing something to make it interesting.
@@ -92,7 +92,7 @@ and they can be assigned to a `Renderer` component for the engine to use them.
 If you look at the inspector of any of your cubes, you should see a `MeshRenderer` component.
 It has a field named `Materials` where you can assign multiple materials (though we'll only use one for each object).
 
-![renderer materials](ClassTutorialAssets/renderer_materials.png)
+![renderer materials](ClassTutorialAssets/class1/img/renderer_materials.png)
 
 To create a new material, we will go to our Project window at the bottom. 
 First, we will create a new folder (Right-click, Create -> Folder) inside the Assets folder and name it *Materials*.
@@ -100,7 +100,7 @@ Then, the same way, we will create a Material in it and name it *Black*
 (or *MaterialBlack*, or any other name that will help you know what it represents).
 You should see it appear along with new inspector options on the right.
 
-![material inspector](ClassTutorialAssets/material_inspector.png)
+![material inspector](ClassTutorialAssets/class1/img/material_inspector.png)
 
 For now, we will only be interestede in one setting, `Base Map` under `Surface Inputs`. 
 You can then click on the white bar (the color slot) and choose the color of your material (black here).
@@ -109,7 +109,7 @@ Once that's done, you can drag and drop your material to any object on your scen
 
 With this, try and make your scene a little more colorful. Mine looks like this:
 
-![colored scene](ClassTutorialAssets/colored_scene.png)
+![colored scene](ClassTutorialAssets/class1/img/colored_scene.png)
 
 ### Prefabs
 Let's say you made a cool structure, and you want to reuse it. 
@@ -118,7 +118,7 @@ Quite tedious, and not very scalable. But of course, there's a solution for that
 First, lets make a small ramp with two cubes. We will also create an empty object and call it *Ramp*. 
 Then, we drag and drop (in the hierarchy) the two cubes that make up our ramp to the empty *Ramp* object to make them childs of it.
 
-![cube ramp](ClassTutorialAssets/cube_ramp.png)
+![cube ramp](ClassTutorialAssets/class1/img/cube_ramp.png)
 
 That way, we can already duplicate our ramp more easily by only selecting the parent object. 
 It is also a way to organize and tidy our hierarchy. I will do something similar with our objects by making an empty *Environment*
@@ -126,7 +126,7 @@ that will contain all of the environment props. And just before adding any child
 is reset to default values to avoid strange problems later down the line 
 (you can do so by Right-clicking on the Transform component and selecting `reset`).
 
-![environment empty object](ClassTutorialAssets/environment_empty_object.png)
+![environment empty object](ClassTutorialAssets/class1/img/environment_empty_object.png)
 
 But our work here is not done. You might want to reuse this structure in another scene (we'll have a look at scene in another class), 
 or even be able to make one change and have it applied to all instances of your structure, like a different color.
@@ -136,7 +136,7 @@ To create a prefab, simply drag and drop the object you want to make a prefab of
 It should now appear blue in the hierarchy. 
 Don't forget to keep your project tidy by placing your assets in corresponding folders.
 
-![ramp prefab](ClassTutorialAssets/ramp_prefab.png)
+![ramp prefab](ClassTutorialAssets/class1/img/ramp_prefab.png)
 
 You can now simply drag and drop your prefab from your project files to the scene (or the hierarchy) and it will be added.
 You might notice some offset between your cursor and the prefab while dragging it, or the ramp floating in the air when you drop it.
@@ -157,7 +157,7 @@ and you might have to move your ramp back on the scene as the changes we made to
 Finally, we will add a sphere juste above the ramp so it will roll down and position our camera. 
 An easy way to setup the camera is to move the view where you want, an then select the camera, go to `GameObject` and `Align With View`.
 
-![camera and sphere setup](ClassTutorialAssets/camera_and_sphere_setup.png)
+![camera and sphere setup](ClassTutorialAssets/class1/img/camera_and_sphere_setup.png)
 
 Now hit play and...
 Well, that's a bummer. The sphere didn't roll down as we expected.
@@ -199,7 +199,9 @@ like pushing an object around. Though this also means that you have complete con
 (except for collisions where it's always a bit tricky to code custom interactions, but is almost never needed). 
 Another downside is that you won't be able to use any shape for the collisions other than the capsule one (which is often enough).
 
-For this course, we'll use the CharacterController along with a custom player prefab available [here](ClassTutorialAssets/FPSController_IS.unitypackage).
+### Using the CharacterController
+
+For this course, we'll use the CharacterController along with a custom player prefab available [here](ClassTutorialAssets/class1/FPSController_IS.unitypackage).
 Just drag and drop the file in your Project window, and click import.
 
 Once the import is complete, you should have a new prefab in your Prefab folder, called `Player`. 
@@ -210,17 +212,19 @@ One we placed before, and one inside the player. Remove the previous camera (by 
 and try running the game again. 
 
 If you had not forgotten to quit play mode before making your changes, 
-you should now see from the player's perspective and be able to move the camera using your mouse. You can also jump with **Space**
-and sprint while pressing **Shift**.
+you should now see from the player's perspective and be able to move the camera using your mouse. You can also jump with **Space** 
+(notice how we can jump infinitely; we'll correct that later) and sprint while pressing **Shift**.
 
-![player pov](ClassTutorialAssets/player_pov.png)
+![player pov](ClassTutorialAssets/class1/img/player_pov.png)
+
+### Understanding the structure
 
 Before we end this class, let's take a quick look at how the player is built.
 To isolate it from the rest of the scene, lets go into prefab view.
 
 First, lets take a look at the hierarchy:
 
-![player hierarchy](ClassTutorialAssets/player_hierarchy.png)
+![player hierarchy](ClassTutorialAssets/class1/img/player_hierarchy.png)
 
 We have 
 - a player object as the root, which will contain the scripts and components for the movement;
@@ -230,7 +234,7 @@ We have
 
 Now, lets look at the inspector of the root object, the player:
 
-![player inspector](ClassTutorialAssets/player_inspector.png)
+![player inspector](ClassTutorialAssets/class1/img/player_inspector.png)
 
 First off, we have the `Transform`, nothing new here.
 
@@ -254,7 +258,7 @@ Finally, the `PlayerInput` component. This is the bridge between the scripts and
 If you open the Events and Player dropdowns, you'll see many different slots for the different actions
 that the user can input, such as Move, Look, or Jump.
 
-![player input](ClassTutorialAssets/player_input.png)
+![player input](ClassTutorialAssets/class1/img/player_input.png)
 
 For some of these actions, a specific function from the PlayerMovement or MouseLook scripts is assigned.
 This means that when the user will perform said action, the corresponding functions will be called.
@@ -262,7 +266,34 @@ This means that when the user will perform said action, the corresponding functi
 These actions are defined in an asset available in your Assets folder called *InputSystem_Actions*.
 You can go take a look at how it's build, and even add some actions of your own.
 
-![input actions](ClassTutorialAssets/input_actions.png)
+![input actions](ClassTutorialAssets/class1/img/input_actions.png)
+
+### About the infinite jump
+
+If you've done your testing, you should have noticed that you can jump while in the air. 
+This is because the way the ground check is done, our player currently cannot differentiate itself from any other object, 
+and thinks he is grounded on himself (like if you could use your own body as a step when jumping).
+
+To fix this issue, we need to create a new layer for our player. 
+Go to your inspector and click Add layer in the layers dropdown at the top.
+
+![inspector add layer](ClassTutorialAssets/class1/img/inspector_add_layer.png)
+
+Now add a `Player` layer:
+
+![player layer](ClassTutorialAssets/class1/img/player_layer.png)
+
+Then go back to your player prefab and change its layer. 
+You should be given a prompt asking if you want to change the layer of all chidrens.
+You can do both, it should not have any impact on the current player. 
+However, if you were to add functionalities relying on layers, you should be careful about it.
+
+Be careful where you do your modifications on your prefabs. 
+If you are not in prefab mode, they will only be applied in the scene your object is in, and won't be saved to the asset.
+The local changes will be displayed with a vertical blue line on the left of the inspector. 
+You can revert or apply them to the asset by right-clicking on the change or through the override dropdown at the top.
+
+![prefab overrides](ClassTutorialAssets/class1/img/prefab_overrides.png)
 
 ## Conclusion
 
@@ -273,5 +304,7 @@ For example, you could make a level where we have to jump from box to box in ord
 Bye!
 
 
-
+---
 *course by Julien Charvet for GCC*
+
+[next class](https://github.com/Skydrag42/GCC_Unity_Forma_Class2)
