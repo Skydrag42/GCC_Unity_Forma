@@ -9,6 +9,7 @@ public class Chest : MonoBehaviour, IInteractable
 	public void Interact()
 	{
 		animator.SetBool("open", true);
+		PopUpController.Instance?.ShowPopUp();
 	}
 
 }
