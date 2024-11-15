@@ -434,6 +434,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1553189883834567023, guid: 978166d25792b724a9ca2df14882ec28,
         type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 180943571}
+    - targetCorrespondingSourceObject: {fileID: 1553189883834567023, guid: 978166d25792b724a9ca2df14882ec28,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 180943569}
   m_SourcePrefab: {fileID: 100100000, guid: 978166d25792b724a9ca2df14882ec28, type: 3}
@@ -459,6 +463,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   maxInteractionDistance: 3
+--- !u!114 &180943570 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1553189883834567012, guid: 978166d25792b724a9ca2df14882ec28,
+    type: 3}
+  m_PrefabInstance: {fileID: 180943567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180943568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &180943571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180943568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b3d4edc13a58d44a2a5caa353cf77e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 180943570}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +890,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpObject: {fileID: 1665943508}
+  popUpIcon: {fileID: 553205239}
+  itemName: {fileID: 1491936176}
 --- !u!1 &770381254
 GameObject:
   m_ObjectHideFlags: 0
@@ -1575,6 +1606,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.0000049416803
       objectReference: {fileID: 0}
+    - target: {fileID: 3438196526767402093, guid: c5cd395803277a24793250ad6f1b65b4,
+        type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6905609870639353253, guid: c5cd395803277a24793250ad6f1b65b4,
         type: 3}
       propertyPath: m_Layer
@@ -1626,6 +1662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1866418478}
+  item: {fileID: 11400000, guid: f312ea1af0ff29846bd63fc86050c370, type: 2}
 --- !u!65 &1866418476
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1658,7 +1695,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 34389d66561969c4c83032952301c6a6, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
