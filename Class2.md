@@ -371,6 +371,6 @@ See you later!
 ---
 *course by Julien Charvet for GCC*
 
-[previous class](https://github.com/Skydrag42/GCC_Unity_Forma_Class1/Class1.md)
+[previous class](https://github.com/Skydrag42/GCC_Unity_Forma_Class1/)
 ||
-[next class](https://github.com/Skydrag42/GCC_Unity_Forma_Class2/Class2.md)
+[next class](https://github.com/Skydrag42/GCC_Unity_Forma_Class2/)
