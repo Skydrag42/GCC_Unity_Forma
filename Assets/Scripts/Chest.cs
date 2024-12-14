@@ -6,8 +6,14 @@ public class Chest : MonoBehaviour, IInteractable
 {
 	public Animator animator;
 	private bool opened = false;
+	AudioSource sfx;
 
 	public ItemData item;
+
+	private void Start()
+	{
+		sfx = GetComponent<AudioSource>();
+	}
 
 	public void Interact()
 	{
@@ -16,6 +22,7 @@ public class Chest : MonoBehaviour, IInteractable
 		animator.SetBool("open", true);
 		PopUpController.Instance?.SetupPopup(item);
 		PopUpController.Instance?.ShowPopUp();
+		sfx.Play();
 	}
 
 }
