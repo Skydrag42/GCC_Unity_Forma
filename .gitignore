@@ -62,7 +62,7 @@ sysinfo.txt
 *.unitypackage
 *.app
 
-!/ClassTutorialAssets/FPSController_IS.unitypackage
+!/ClassTutorialAssets/class1/FPSController_IS.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
