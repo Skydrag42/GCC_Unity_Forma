@@ -202,18 +202,214 @@ or reload the area, or they spawn continuously around a center point.
 
 Because we love infinite experience points farming, we'll make a continuous spawner.
 
+Let's also make it a bit generic so that we can reuse it to spawn other entities.
+reate a new C# Script, `EntitySpawner`.
 
+We'll be needing a few different values : 
+
+```cs
+using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class EntitySpawner : MonoBehaviour
+{
+	public GameObject entityPrefab;
+	public Transform entitesParent;
+    public float spawnRate = .1f;
+
+    public float spawnRadius = 5;
+	private float samplingDistance = 1f;
+
+	public float maxQuantity = 10f;
+}
+```
 
 ### Coroutines
 
+In order to spawn our entities at a constant rate, we could create a timer that would 
+get incremented every frame by `Time.deltaTime`. However, we'll be using a more appropriate concept, `Coroutines`.
+Coroutines are asynchronous methods that can wait until a certain condition is satisfied before 
+processing its code, without blocking the main loop.
+
+```cs
+
+private void Start()
+{
+    StartCoroutine(SpawnEntity());
+}
+
+private IEnumerator SpawnEntity()
+{
+    while (true) 
+    {
+        yield return new WaitForSeconds(1 / spawnRate);
+        Debug.Log("spawning");
+    }
+}
+```
+
+This coroutine will print the "spawning" message indefinitely once every ten seconds (for a spawn rate of 0.1f).
+You can also return `null` if you want to wait until the next frame update.
+
+### Finding a valid spawn point
+
+Since our entities are using the navmesh, we need to spawn them on it otherwise we'll get some errors.
+We could spawn them at the position of the spawner, but we might prefer to spawn them randomly in a certain
+radius around the spawner. 
+
+Our terrain is flat, so we'll just find a random point in a circle and try to find the closest possible 
+position on the navmesh. However, if your terrain had elevation changes, you'd need to account for that when 
+sampling the position on the navmesh. A look at the [documentation](https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html)
+for the method we'll be using will tell you more about the problems you might encounter.
+
+```cs
+
+private IEnumerator SpawnEntity()
+{
+	NavMeshHit hit;
+	Vector3 spawnPos;
+	while (true)
+	{
+		yield return new WaitForSeconds(1 / spawnRate);
+		if (entitesParent.childCount >= maxQuantity) continue;
+
+		spawnPos = Random.insideUnitCircle * spawnRadius;
+		// insideUnitCircle returns a vector2, so we need to switch some values
+		spawnPos.z = spawnPos.y;
+		spawnPos.y = 0;
+
+		spawnPos += transform.position;
+		
+		if (NavMesh.SamplePosition(spawnPos, out hit, samplingDistance, NavMesh.AllAreas))
+			spawnPos = hit.position;
+		else spawnPos = transform.position;
+	}
+}
+
+```
+
 ### Instantiating
+
+The spawner is almost done. We only need to do the actual spawning of the entity.
+We'll call the `Instantiate()` method from the GameObject class. This will create a copy of the 
+given gameobject and add it to the scene at runtime.
+
+```cs
+private IEnumerator SpawnEntity()
+{
+	// ...
+	while (true)
+	{
+		// ...
+		Instantiate(entityPrefab, spawnPos, Quaternion.identity, entitesParent);
+	}
+]
+```
+
+We also specify where to spawn the object, with what orientation and as a children of which object.
+If you want further control on the spawned object, the method returns its reference.
+
+
+If you want, you can set a custom icon for your script. Select it, and click 
+on the arrow under the default icon.
+
+![agent settings](ClassTutorialAssets/Class4/img/script_icon.png)
+
+Now, you can create a slime spawner object and a slime parent object (it will hold all the instances, so it's
+better if it is a stationary object with its transform set to default values). Assing the values to the script,
+and try it.
+
+![slime wave](ClassTutorialAssets/Class4/img/slime_wave.png)
 
 ## Creating a custom shader
 
+If you've come this far, well done! You can be proud of yourself.
 
+However, before we say goodbye, let's do one final thing. Unity comes with a very powerful tool when it comes 
+to making shaders, the code behind the materials we used to color our objects. This tool is called `ShaderGraph`.
+
+This will allow you to create your own shaders without having to learn any shader language, by linking logic 
+gates together. This simplifies and renders the process accessible to almost anyone, as long as they do not fear
+doing a little bit of maths.
+
+Today, we'll be making a shader for our slime, giving it a more transparent and vibrant look.
+
+### Shader graph
+
+In your project window, right-click Create->Shader Graph->URP->Lit Shader Graph and name it SlimeSahder.
+Double click to open it in the shader graph window.
+
+You'll see two main nodes in your blackboard, `vertex` and `fragment`. Vertex will be used to move the 
+object geometry, for example for making water waves, while fragment is where we'll work with the pixel's colors.
+At the left, you can find the properties of your shaders that will be available on the material, like the 
+color field we changed on the default materials. At the top right, you'll find the graph inspector. 
+
+Since we said we'd make our slime transparent, we'll need to change the `surface type` from `Opaque` 
+to `Transparent` in the graph inspector. you can also set the Preview window to Custom Mesh->Slime body to 
+see the slime instead of a sphere (if the preview doesn't show up, try closing and reopening the window).
+
+The first thing we'll be doing is creating a new `BaseColor` property from the "+" icon,
+setting its default value and then linking it to the Base Color in the fragment node 
+(drag and drop the property to add it to the blackboard).
+
+![shader base color](ClassTutorialAssets/Class4/img/shader_base_color.png)
+
+Then, press space to add a new node. Search for the `Fresnel Effect` one.
+This node generates white when near the borders of the mesh and black in the center. 
+We will then add another color property, but this time call it GlowColor and set its mode to `hdr`.
+HDR color nodes will be read by the post processing volumes to apply bloom in the scene. 
+We'll get to that part later.
+Add a multiply node to connect the output of the fresnel and the glow color, and link it 
+to the emission field.
+Finally, create a float property to control the fresnel strength, and another one for the alpha channel
+(you can set its mode to slider with values between 0 and 1).
+
+Your graph should look something like this:
+
+![final graph](ClassTutorialAssets/Class4/img/final_graph.png)
+
+
+Now, go back to your project window, and right-click on your shader, create material. 
+This will create a material with the correct shader already selected.
+Assign it to your slime prefab, and adjust the values as you see fit.
+
+It should look like this:
+![slime with shader](ClassTutorialAssets/Class4/img/slime_with_shader.png)
+
+If you cannot see the gloaw around the slime, there are a few reasons why that might be:
+- the intensity value for the glow color is too small / the color is too dark
+- the post-processing checkbox on the main camera is not set to true
+- you do not have a default volume with bloom.
+
+### Post processing and graphics settings
+
+But what is a post processing volume? Its a component that will define a zone where 
+the selected post processing effets are applied to the camera, such as bloom, vignette, 
+color correction, tonemapping, etc.
+
+If you go to the settings folder in your assets, you should find a file called `Sample Scene Profile` 
+and another one called `Default Volume`. If you select the `PC_RPAsset` file 
+(this is the main asset that defines the quality/graphics options for your game), you'll see under the `Volumes`
+tab that either of the two mentionned is selected. You can try changing a few of the volume file settings 
+like bloom or vignette, and see how that affects your game view. 
+
+If you want to set a specific volume area or change the default volume for only this scene, juste create 
+a new gameobject, add a volume component, and create a new volume asset.
+
+![having fun with volumes](ClassTutorialAssets/Class4/img/having_fun_with_volumes.png)
 
 ## Conclusion
 
+*Et voilà!* You're done with this course. It's now up to you if you want to expand on 
+what we've built so far, or if you want to start your own project. 
+
+However, remember this was just an introduction, as we've only scratched the surface of 
+what the engine has to offer. 
+
+I hope you have fun in your gamedev journey, and I'd love to see what you'll make in the future!
+
+Goodbye!
 
 ---
 *course by Julien Charvet for GCC*
