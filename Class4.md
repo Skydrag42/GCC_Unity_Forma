@@ -117,17 +117,92 @@ option, and skinned meshes (what we have for animated meshes) are not compatible
 with this. Instead, you could use the `Physics colliders` option, but other problem
 could arise. An alternative solution is adding the `NavMeshObstacle` component 
 to the problematic object, which will let us define a custom bounding box which
-the baking process will use. However, note that this method is usually used for 
-moving objects.
+the navmesh will process at runtime. Note that this method is usually 
+used for moving objects.
 
 Add one to your chest prefab, and select the `Carve` option. 
 Adjust the size to your needs, you should see the surface update in realtime.
 
 ### Making an agent
 
+Now that we've made an approximately correct navmesh, let's add agents thats will 
+use it. On your slime prefab, add a `NavMeshAgent` component and set its type to slime.
+Then, adjust the settings to your needs. I go with the following:
+
+![agent settings](ClassTutorialAssets/Class4/img/agent_settings.png)
+
+The next step is making a script that will set a destination for the agent. 
+For starters, we'll test by simply giving the player as a destination so that 
+the agent will always follow them.
+
+```cs
+
+using UnityEngine;
+using UnityEngine.AI;
+
+[RequireComponent(typeof(NavMeshAgent))]
+public class SimpleSlime : MonoBehaviour
+{
+    NavMeshAgent agent;
+    
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    void Update()
+    {
+        if (PlayerController.Instance != null)
+            agent.SetDestination(PlayerController.Instance.transform.position);
+    }
+}
+
+```
+
+The `RequireComponent` directive will force the presence of a specified component 
+on the object the script is placed.
+
+Running the game now should make the slime follow you and avoid the trees and obstacles.
+
 #### Optimisation concerns
 
+As it is, the scene works quite nicely, but you can very quickly run into 
+performance issues. If you want to see them appear, just add a few slimes.
+Depending on your computer, it might take from a few slimes to hundreds of them.
+Of course, adding more entities will also cause other perfomance issues such has 
+a very high polygon count, etc. However, some of those issues might come from the
+AI Navigation. 
+
+The first thing to consider is how we set the destination of our agents. Right now, 
+we are changing it every frame, so every agent recalculates its path every frame.
+If we have 10 agents running at 60 fps, that's already 600 path computations
+every second. For basic computation like addition, this poses absolutely no problem.
+However, the algorithm can be quite performance heavy depending on the complexity of 
+the navmesh. And in fact, the player might not even notice if the agent only recalculates 
+its path once every second or so, unless moving at very high speed.
+
+Adding a timer would be a first optimisation. You could also use a `Coroutine`, 
+which we'll discuss in a later part of the class. In fact, making a lot of 
+unique calls to a method (especially `Update`) for the same type of logic is pretty 
+inefficient. To improve it even more, you could create a general script for handling 
+all slimes in a single call. And if you want to go even further, 
+you might want to create some sort of LOD (Level Of Detail) that will scale the 
+rate of computation depending on the distance to the player, meaning that objects 
+very far will be update way less often.
+
+Finally, another thing to consider is the obstacle avoidance `Quality` setting.
+Changing this affects how precisely the agent tries to avoid other agents and 
+obstacles, and can easily improve the performance.
+
 ## Spawning the slimes
+
+If you have ever played a survival/rpg game, you know that monsters need to spawn 
+out of thin air. Either their placement is predefined and they respawn when you die
+or reload the area, or they spawn continuously around a center point.
+
+Because we love infinite experience points farming, we'll make a continuous spawner.
+
+
 
 ### Coroutines
 
